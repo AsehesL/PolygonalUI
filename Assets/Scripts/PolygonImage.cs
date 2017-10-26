@@ -48,18 +48,21 @@ public class PolygonImage : MaskableGraphic, ISerializationCallbackReceiver, ICa
 
     public bool IsRaycastLocationValid(Vector2 sp, Camera eventCamera)
     {
-        Vector2 local;
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(rectTransform, sp, eventCamera, out local);
-
-        int edgeCount = edgeWeights.EdgeCount;
-
-        float deltaAngle = 360f / edgeCount;
-
-        for (int i = 0; i < edgeCount; i++)
+        if (raycastTarget)
         {
-            bool result = IsInPolygon(i, deltaAngle, local);
-            if (result)
-                return true;
+            Vector2 local;
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(rectTransform, sp, eventCamera, out local);
+
+            int edgeCount = edgeWeights.EdgeCount;
+
+            float deltaAngle = 360f/edgeCount;
+
+            for (int i = 0; i < edgeCount; i++)
+            {
+                bool result = IsInPolygon(i, deltaAngle, local);
+                if (result)
+                    return true;
+            }
         }
         return false;
     }
